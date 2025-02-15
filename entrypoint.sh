@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Install PHP dependencies using Composer
+composer install --no-interaction --prefer-dist
+
 # Run database migrations
 php artisan migrate:fresh --force
 
