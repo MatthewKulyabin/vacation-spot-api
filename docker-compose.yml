@@ -1,0 +1,37 @@
+services:
+    app:
+        build: .
+        container_name: sputnik-test-task
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - .:/var/www
+        depends_on:
+            - db
+        networks:
+            - sputnik-test-task-network
+        ports:
+            - "8000:8000"
+        command: php artisan serve --host=0.0.0.0 --port=8000
+
+    db:
+        image: postgres:16
+        container_name: sputnik-t-t-postgres_db
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: sputnik-test-task
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        networks:
+            - sputnik-test-task-network
+
+volumes:
+    pgdata:
+
+networks:
+    sputnik-test-task-network:
+        driver: bridge
